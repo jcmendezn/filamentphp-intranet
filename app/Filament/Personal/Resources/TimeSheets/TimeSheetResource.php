@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Filament\Resources\Timesheets;
+namespace App\Filament\Personal\Resources\TimeSheets;
 
-use App\Filament\Resources\Timesheets\Pages\CreateTimesheet;
-use App\Filament\Resources\Timesheets\Pages\EditTimesheet;
-use App\Filament\Resources\Timesheets\Pages\ListTimesheets;
-use App\Filament\Resources\Timesheets\Pages\ViewTimesheet;
-use App\Filament\Resources\Timesheets\Schemas\TimesheetForm;
-use App\Filament\Resources\Timesheets\Schemas\TimesheetInfolist;
-use App\Filament\Resources\Timesheets\Tables\TimesheetsTable;
-use App\Models\Timesheet;
+use App\Filament\Personal\Resources\TimeSheets\Pages\CreateTimeSheet;
+use App\Filament\Personal\Resources\TimeSheets\Pages\EditTimeSheet;
+use App\Filament\Personal\Resources\TimeSheets\Pages\ListTimeSheets;
+use App\Filament\Personal\Resources\TimeSheets\Pages\ViewTimeSheet;
+use App\Filament\Personal\Resources\TimeSheets\Schemas\TimeSheetForm;
+use App\Filament\Personal\Resources\TimeSheets\Schemas\TimeSheetInfolist;
+use App\Filament\Personal\Resources\TimeSheets\Tables\TimeSheetsTable;
+use App\Models\TimeSheet;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -19,35 +19,33 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
-
-class TimesheetResource extends Resource
+class TimeSheetResource extends Resource
 {
-    protected static ?string $model = Timesheet::class;
-
-    //protected static ?string $navigationLabel = 'Employees';
-
-    protected static string|\UnitEnum|null $navigationGroup = 'Employee Management';
-
-    protected static ?int $navigationSort = 2;
-
+    protected static ?string $model = TimeSheet::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTableCells;
 
-    protected static ?string $recordTitleAttribute = 'name';
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('user_id', Auth::user()->id)->orderBy('id', 'desc');
+    }
 
     public static function form(Schema $schema): Schema
     {
-        //return TimesheetForm::configure($schema);
         return $schema
             ->schema([
                 Forms\Components\Select::make('calendar_id')
                 ->relationship(name: 'calendar', titleAttribute: 'name')
                     ->label('Calendario')
                     ->required(),
-                Forms\Components\Select::make('user_id')
+       /*          Forms\Components\Select::make('user_id')
                 ->relationship(name: 'user', titleAttribute: 'name')
-                    ->required(),
+                    ->required(), */
                 Forms\Components\Select::make('type')
                     ->options([
                         'work' => 'Working',
@@ -78,7 +76,7 @@ class TimesheetResource extends Resource
 
     public static function table(Table $table): Table
     {
-        //return TimesheetsTable::configure($table);
+        //return TimeSheetsTable::configure($table);
         return $table
             ->columns([
                 
@@ -129,10 +127,16 @@ class TimesheetResource extends Resource
                 ->icon('heroicon-m-trash')
                 ->color('danger')
                 ->requiresConfirmation()
-                ->action(fn ($record) => $record->delete()),
+                ->action(fn ($record) => $record->delete())
+            ])
+            ->toolbarActions([
+                    //Tables\Actions\BulkActionGroup::make([
+                    //Tables\Actions\DeleteBulkAction::make(),
+                    BulkActionGroup::make([
+                        DeleteBulkAction::make(),
+                ]),                
             ]);
-            
-            
+
     }
 
     public static function getRelations(): array
@@ -145,10 +149,10 @@ class TimesheetResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListTimesheets::route('/'),
-            'create' => CreateTimesheet::route('/create'),
-            'view' => ViewTimesheet::route('/{record}'),
-            'edit' => EditTimesheet::route('/{record}/edit'),
+            'index' => ListTimeSheets::route('/'),
+            'create' => CreateTimeSheet::route('/create'),
+            'view' => ViewTimeSheet::route('/{record}'),
+            'edit' => EditTimeSheet::route('/{record}/edit'),
         ];
     }
 }

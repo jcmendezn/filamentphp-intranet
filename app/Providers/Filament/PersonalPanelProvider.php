@@ -13,7 +13,6 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
-use Filament\Navigation\NavigationGroup;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -21,32 +20,26 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AdminPanelProvider extends PanelProvider
+class PersonalPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-            ->id('admin')
-            ->path('admin')
+            ->id('personal')
+            ->path('personal')
             ->login()
-            ->sidebarCollapsibleOnDesktop()
-            ->renderHook('panels::body.start', function () {
-            $id = filament()->getCurrentPanel()->getId();
-            return "<script>(function(){try{var k='filament.$id.sidebar.isCollapsed';if(localStorage.getItem(k)===null){localStorage.setItem(k,'true');}}catch(e){}})();</script>";
-            })            
+            ->default()
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
+            ->discoverResources(in: app_path('Filament/Personal/Resources'), for: 'App\Filament\Personal\Resources')
+            ->discoverPages(in: app_path('Filament/Personal/Pages'), for: 'App\Filament\Personal\Pages')
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Personal/Widgets'), for: 'App\Filament\Personal\Widgets')
             ->widgets([
-                //AccountWidget::class,
-                //FilamentInfoWidget::class,
+
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -62,31 +55,11 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 FilamentShieldPlugin::make(),
             ])
+
+            ->databaseNotifications()
             ->authMiddleware([
                 Authenticate::class,
-            ])
-        // …tus llamadas actuales (id, path, auth, resources, etc.)
-         ->navigationGroups([
-            // 1ro en el sidebar
-            NavigationGroup::make()
-                ->label('Employees Management')
-                ->collapsed(true),
-
-            // 2do en el sidebar
-            NavigationGroup::make()
-                ->label('System Management')
-                ->collapsed(true),
-        ]) 
-
-        ->plugins([
-            FilamentShieldPlugin::make(),
-        ])
-
-        ;          
-            
-
-
-            
+            ]);
             
     }
 }

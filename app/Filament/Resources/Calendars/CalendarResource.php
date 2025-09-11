@@ -20,8 +20,10 @@ class CalendarResource extends Resource
 {
     protected static ?string $model = Calendar::class;
 
+    protected static ?int $navigationSort = 1;
+
     protected static string|\UnitEnum|null $navigationGroup = 'System Management';
-    
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;
 
     protected static ?string $recordTitleAttribute = 'name';
