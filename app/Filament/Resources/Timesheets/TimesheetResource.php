@@ -19,6 +19,9 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Actions\Action;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 
 
 class TimesheetResource extends Resource
@@ -119,17 +122,21 @@ class TimesheetResource extends Resource
 
             ])
             ->recordActions([
-            Action::make('edit')
-                ->label('Edit')
-                ->icon('heroicon-m-pencil-square')
-                ->url(fn ($record) => static::getUrl('edit', ['record' => $record])),
+            //Action::make('edit')
+            ViewAction::make(),                            
+            EditAction::make()
+                //->label('Edit')
+                ->icon('heroicon-m-pencil-square'),
+                //->url(fn ($record) => static::getUrl('edit', ['record' => $record])),
 
-           Action::make('delete')
-                ->label('Delete')
+           //Action::make('delete')
+           DeleteAction::make()
+                //->label('Delete')
                 ->icon('heroicon-m-trash')
                 ->color('danger')
                 ->requiresConfirmation()
-                ->action(fn ($record) => $record->delete()),
+                //->action(fn ($record) => $record->delete()),
+            
             ]);
             
             

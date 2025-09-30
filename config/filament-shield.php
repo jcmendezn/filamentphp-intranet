@@ -1,7 +1,12 @@
 <?php
+use Illuminate\Support\Facades\Lang;
+use BezhanSalleh\LanguageSwitch\LanguageSwitch;
+
+
 
 return [
 
+    
     /*
     |--------------------------------------------------------------------------
     | Shield Resource
@@ -145,7 +150,7 @@ return [
     */
 
     'localization' => [
-        'enabled' => false,
+        'enabled' => true,
         'key' => 'filament-shield::filament-shield',
     ],
 
@@ -238,11 +243,12 @@ return [
     | Shield to discover entities across all of them.
     |
     */
-
+ 
+    // AQUI LO CAMBIE PARA MULTIIPLES PANELES
     'discovery' => [
-        'discover_all_resources' => false,
-        'discover_all_widgets' => false,
-        'discover_all_pages' => false,
+        'discover_all_resources' => true,
+        'discover_all_widgets' => true,
+        'discover_all_pages' => true,
     ],
 
     /*
@@ -257,5 +263,18 @@ return [
     */
 
     'register_role_policy' => true,
+
+    ////////////////////////////////////////////////////////////
+/* 'nav' => [
+    'group' => 'Security', // o 'Seguridad'
+    'role' => [
+        'label' => 'Roles',
+        'icon'  => 'heroicon-o-user-group',
+    ],
+    'permission' => [
+        'label' => 'Permissions',
+        'icon'  => 'heroicon-o-key',
+    ],
+],     */
 
 ];

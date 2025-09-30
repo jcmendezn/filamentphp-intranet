@@ -1,0 +1,7 @@
+/* Tu tema personalizado de Filament */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@source '../../../../vendor/bezhansalleh/filament-language-switch/resources/views/**/*.blade.php';

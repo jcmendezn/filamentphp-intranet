@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Faker\Provider\ar_EG\Person;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -19,6 +20,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Filament\Personal\Widgets\PersonalWidgetStats;
 
 class PersonalPanelProvider extends PanelProvider
 {
@@ -39,7 +41,7 @@ class PersonalPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Personal/Widgets'), for: 'App\Filament\Personal\Widgets')
             ->widgets([
-
+                    PersonalWidgetStats::class,
             ])
             ->middleware([
                 EncryptCookies::class,

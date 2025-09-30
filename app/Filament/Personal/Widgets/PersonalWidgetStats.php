@@ -16,7 +16,7 @@ class PersonalWidgetStats extends StatsOverviewWidget
     {
 
         return [
-            Stat::make('Pending Holidays', $this->getPendingHolidays(Auth::user())),
+            Stat::make('Pending Holidays personal', $this->getPendingHolidays(Auth::user())),
             Stat::make('Approved Holidays', $this->getApprovedHolidays(Auth::user())),
             Stat::make('Total Worked Hours', $this->getTotalWork(Auth::user())),
             Stat::make('Total Paused Hours', $this->getTotalPaused(Auth::user())),

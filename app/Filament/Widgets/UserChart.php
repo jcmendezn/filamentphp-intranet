@@ -3,10 +3,15 @@
 namespace App\Filament\Widgets;
 
 use Filament\Widgets\ChartWidget;
+use App\Filament\Support\AuthorizesWidgetWithShield;
 
 class UserChart extends ChartWidget
 {
+    //use AuthorizesWidgetWithShield;
+
     protected ?string $heading = 'User Chart';
+
+
 
     protected function getData(): array
     {

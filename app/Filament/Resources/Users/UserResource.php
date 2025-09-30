@@ -18,7 +18,6 @@ use App\Models\City;
 use Filament\Forms;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
-//use Filament\Schemas\Get;
 use Filament\Schemas\Components\Utilities\Get as Get;
 use Filament\Schemas\Components\Utilities\Set as Set;
 
@@ -108,7 +107,13 @@ public static function form(Schema $schema): Schema
             Forms\Components\TextInput::make('address')
                 ->required(),                
             Forms\Components\TextInput::make('postal_code')
-                ->required(),                
+                ->required(),           
+            Forms\Components\Select::make('roles')
+                ->label('Roles')
+                ->relationship('roles', 'name') // Relación con spatie/laravel-permission
+                ->multiple()
+                ->preload()
+                ->searchable(),                     
 
 
             ]),
@@ -162,6 +167,10 @@ public static function form(Schema $schema): Schema
                     ->label('Código Postal')
                     ->searchable()
                     ->sortable(),
+/*
+            Tables\Columns\TextColumn::make('roles.name')
+                ->label('Roles')
+                ->badge(),                    */
             ]);
     }
 
